@@ -18,3 +18,11 @@ $ /gsc/btl/linuxbrew/bin/clustalo -i tempo1.fa -o tempo1.clustalo.clw --wrap=100
 #using grep to get stuff instead of parsing
 $ grep -someoutputstuff "search_string" file_to_search_in
 $ grep -A1 "sp|P84522|VHL1_VIOHE" ../sequences/uniprot-ncbi-filtered-10Jan18.fa
+
+#creating a database for proteins
+$ makeblastdb -in source_fasta_file -dbtype 'prot'
+
+#doing a comparison with blastp
+$ blastp -num_threads 4 -outfmt '6 std qcovs ppos' -evalue 1e-5 -query query_file.fa -subject source_file.fa > output_file.blastp
+$ blastp -threads 4 -evalue 1e-5 -query /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa -subject /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa > uniprot-ncbi-filtered-10Jan18-self.blastp
+
