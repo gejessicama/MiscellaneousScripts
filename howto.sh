@@ -24,5 +24,8 @@ $ makeblastdb -in source_fasta_file -dbtype 'prot'
 
 #doing a comparison with blastp
 $ blastp -num_threads 4 -outfmt '6 std qcovs ppos' -evalue 1e-5 -query query_file.fa -subject source_file.fa > output_file.blastp
-$ blastp -threads 4 -evalue 1e-5 -query /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa -subject /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa > uniprot-ncbi-filtered-10Jan18-self.blastp
+$ blastp -num_threads 4 -evalue 1e-5 -query /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa -subject /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa > uniprot-ncbi-filtered-10Jan18-self.blastp
+
+blastp -evalue 1e-5 -outfmt '6 qaccver saccver evalue length nident mismatch positive ppos' -query /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa -subject /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa > selfblastJan23.blastp
+
 

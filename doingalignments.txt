@@ -1,0 +1,34 @@
+[jma@jma01 ~]$ blastp -evalue 1e-5 -outfmt '6 qseqid sseqid evalue length ppos' -query /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa -subject /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa > selfblastJan23.blastp
+[jma@jma01 ~]$ cd Documents/AMP/
+[jma@jma01 AMP]$ blastp -evalue 1e-5 -outfmt '6 qaccver saccver evalue length nident mismatch positive ppos' -query /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa -subject /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa > selfblastJan23.blastp
+[jma@jma01 AMP]$ less selfblastJan23.blastp 
+[jma@jma01 AMP]$ awk '$1~"CYO25_VIOOD" $NF>70 {print $2}' selfblastJan23.blastp > CY025_over_70
+[jma@jma01 AMP]$ less CY025_over_70
+[jma@jma01 AMP]$ awk '$1~"CYO25_VIOOD" && $NF>70 {print $2}' selfblastJan23.blastp > CY025_over_70 
+[jma@jma01 AMP]$ less CY025_over_70
+[jma@jma01 AMP]$ seqtk subseq /projects/spruceup/scratch/psitchensis/Q903/annotation/amp/sequences/uniprot-ncbi-filtered-10Jan18.fa CY025_over_70 > matches_to_CY025.fa
+[jma@jma01 AMP]$ less matches_to_CY025.fa 
+[jma@jma01 AMP]$ /gsc/btl/linuxbrew/bin/muscle -in matches_to_CY025.fa -out CYO25_muscle.clw -clw
+
+MUSCLE v3.8.1551 by Robert C. Edgar
+
+http://www.drive5.com/muscle
+This software is donated to the public domain.
+Please cite: Edgar, R.C. Nucleic Acids Res 32(5), 1792-97.
+
+matches_to_CY025 30 seqs, lengths min 28, max 123, avg 38
+00:00:00    23 MB(-3%)  Iter   1  100.00%  K-mer dist pass 1
+00:00:00    23 MB(-3%)  Iter   1  100.00%  K-mer dist pass 2
+00:00:00    25 MB(-3%)  Iter   1  100.00%  Align node       
+00:00:00    25 MB(-3%)  Iter   1  100.00%  Root alignment
+00:00:00    25 MB(-3%)  Iter   2  100.00%  Refine tree   
+00:00:00    25 MB(-3%)  Iter   2  100.00%  Root alignment
+00:00:00    25 MB(-3%)  Iter   2  100.00%  Root alignment
+00:00:00    25 MB(-3%)  Iter   3  100.00%  Refine biparts
+00:00:00    25 MB(-3%)  Iter   4  100.00%  Refine biparts
+00:00:00    25 MB(-3%)  Iter   5  100.00%  Refine biparts
+00:00:00    25 MB(-3%)  Iter   5  100.00%  Refine biparts
+00:00:00    25 MB(-3%)  Iter   6  100.00%  Refine biparts
+[jma@jma01 AMP]$ /gsc/btl/linuxbrew/bin/clustalo -i matches_to_CY025.fa -o CYO25_clustalo.clustalo.clw 
+
+
