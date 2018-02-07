@@ -4,8 +4,16 @@ read -p 'Source FASTA file: ' source_fasta
 read -p 'Enter name for all the files: ' file_name
 read -p 'Enter conditions for awk: ' awk_conditions
 
-awk awk_conditions > file_name
-seqtk subseq source_fasta > $(file_name).fa
+BLAST=/projects/spruceup_scratch/psitchensis/Q903/annotation/amp/alignment/MSAs/selfblast.blastp
+DATAB=/projects/spruceup_scratch/psitchensis/Q903/annotation/amp/alignment/MSAs/db.fa
+FILES=/projects/spruceup_scratch/psitchensis/Q903/annotation/amp/alignment/MSAs/byQuery/*
+awk '{print>$1}' $BLAST
 
-muscle -in $(file_name).fa -out $(file_name)_muscle.fa
-clustalo -i $(file_name).fa -o $(file_name)_clo.clw --wrap=1000
+for f in $FILES
+do 
+awk '$NF>50 && $(NF-1)>75 {print $2}' "$f" >"$f"-filtered.txt
+seqtk subseq $DATAB "$f"-filtered.txt > "$f"-filtered.fa
+muscle -in "$f"-filtered.fa -out "$f"-msa.fa
+done 
+
+exit
