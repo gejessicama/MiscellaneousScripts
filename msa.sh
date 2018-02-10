@@ -11,9 +11,9 @@ awk '{print>$1}' $BLAST
 
 for f in $FILES
 do 
-awk '$NF>50 && $(NF-1)>75 {print $2}' "$f" >"$f"-filtered.txt
-seqtk subseq $DATAB "$f"-filtered.txt > "$f"-filtered.fa
-muscle -in "$f"-filtered.fa -out "$f"-msa.fa
+awk '$NF>50 && $(NF-1)>75 {print $2}' $f >$f-filtered.txt
+seqtk subseq $DATAB $f-filtered.txt > $f-filtered.fa
+muscle -in $f-filtered.fa -out $f-msa.fa
 done 
 
 exit
