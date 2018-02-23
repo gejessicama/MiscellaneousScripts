@@ -17,4 +17,5 @@
 ./full.sh 90 60
 ./full.sh 90 70 
 
- 
+find /home/jma/Documents/msa/ -type f -name "*.csv" -exec cp {} /home/jma/Desktop/viz/ \;
+
