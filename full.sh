@@ -15,27 +15,28 @@
 ppos=$1
 qcovs=$2
 BLAST=/projects/spruceup_scratch/psitchensis/Q903/annotation/amp/alignment/MSAs/selfblast.blastp
+#BLAST=/home/jma/Documents/selfblast.blastp
 DB=/projects/spruceup_scratch/psitchensis/Q903/annotation/amp/alignment/MSAs/db.fa
 
 #ROOT=/projects/spruceup_scratch/psitchensis/Q903/annotation/amp/alignment/MSAs
 ROOT=/home/jma/Documents
 CORE=$ROOT/ppos"$ppos"-qcovs"$qcovs"
-BYQ=$CORE/byQuery
+BYQ=$ROOT/byQuery
 TEMP=$CORE/temp_files
 MUSC=$CORE/muscle
-mkdir $CORE $BYQ $TEMP $MUSC
+mkdir -p $CORE $TEMP $MUSC
 
 # separate blast file by query protein 
-cd $BYQ
-awk '{print>$1}' $BLAST
+# cd $BYQ
+# awk '{print>$1}' $BLAST
 
 # make CSV to see variation wrt ppos/qcovs parameters
 for f in $BYQ/*
 do 
     fname=`basename $f`
-    awk '$NF>"$qcovs" && $(NF-1)>"$ppos" {print $2}' $f | sort | uniq > $TEMP/$fname
+    awk -v q="$qcovs" -v p="$ppos" '$NF>q && $(NF-1)>p {print $2}' $f | sort | uniq > $TEMP/$fname
     num=`wc -l $TEMP/$fname | cut -f1 -d' '` 
-    echo $num $fname >> $CORE/ppos"$ppos"-qcovs"$qcovs"-results.txt
+    echo $num", " $fname", $ppos, $qcovs" >> $CORE/ppos"$ppos"-qcovs"$qcovs"-results.csv
     
 done 
 
@@ -54,7 +55,7 @@ do
     # Have we already got this one?
     if [[ -n "${filecksums[$cksum]}" ]] && [[ "${filecksums[$cksum]}" != "$f" ]]
     then
-        echo `basename $f`", "`basename ${filecksums[$cksum]}` >> $CORE/ppos"$ppos"-qcovs"$qcovs"-duplicates.txt
+        echo `basename $f`", "`basename ${filecksums[$cksum]}`", $ppos, $qcovs" >> $CORE/ppos"$ppos"-qcovs"$qcovs"-duplicates.csv
         rm -f "$f"
     else
         filecksums[$cksum]="$f"
@@ -68,7 +69,7 @@ do
     a=`cat "$f" | wc -l`   
     if [ "$a" -eq 1 ]
     then
-       echo `basename $f` >> $CORE/ppos"$ppos"-qcovs"$qcovs"-singletons.txt
+       echo `basename $f`", $ppos, $qcovs" >> $CORE/ppos"$ppos"-qcovs"$qcovs"-singletons.csv
        rm -f "$f"
     fi
 done
