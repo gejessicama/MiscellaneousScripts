@@ -18,9 +18,8 @@ for f in $(find $ROOT -name '*.hmm')
     hmmsearch -E 1e-5 --noali --notextw --tblout $fname-search $f $TESTDB
     declare -i totamp="$(grep -o ';AMP' $fname-search | wc -l)"
     declare -i nonamp="$(grep -o ';non_AMP' $fname-search | wc -l)"
-    declare -i constr="$(wc -l $ROOT/tmp_files$parameters/$fname)"
+    declare -i constr="$(wc -l < $ROOT/tmp_files$parameters/$fname)"
     declare -i incl="$(grep '^[^#;]' $fname-search | awk '{print $1}' | sed -e 's/;AMP//g' | sed -e 's/;non_AMP//g' | comm -12 <(sort "-") <( sort $ROOT/tmp_files$parameters/$fname) | wc -l)"
     
     python f1.py $rootname $parameters $totamp $nonamp $constr $incl 
-    
     done
